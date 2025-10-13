@@ -24,9 +24,10 @@ public class PrintFormattedTableTask {
     public static final String[] input = new String[]{"1", "2", "3", "x", "5", "6", "a",
             "porosiatko", "c", "10", "11", "12", "13", "14", "15", "16"};
     public static final int columns = 5;
+    public static int minCellPadding = 4;
     public static void printFormattedTable() {
 
-        int minCellPadding = 4;
+
        for(int i = 0; i < input.length; i++) {
            printElement(input[i], i, getElementColumn(i));
        }
@@ -44,7 +45,7 @@ public class PrintFormattedTableTask {
         };
     }
     private static int getRequiredSpacesForCell(String cellString, int maxCellStringWidthForCurrentColumn) {
-        return maxCellStringWidthForCurrentColumn - cellString.length();
+        return maxCellStringWidthForCurrentColumn - cellString.length()+minCellPadding;
     }
     private static void printSpaces(int needSpaces){
         for(int j = 0; j <= needSpaces; j++){
