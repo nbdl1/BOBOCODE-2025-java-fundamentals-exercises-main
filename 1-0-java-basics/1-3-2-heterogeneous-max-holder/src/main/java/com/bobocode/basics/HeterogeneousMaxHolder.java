@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-
+//for commit
 /**
  * {@link HeterogeneousMaxHolder} is a multi-type container that holds maximum values per each type. It's kind of a
  * key/value map, where the key is a type and the value is the maximum among all values of this type that were put.

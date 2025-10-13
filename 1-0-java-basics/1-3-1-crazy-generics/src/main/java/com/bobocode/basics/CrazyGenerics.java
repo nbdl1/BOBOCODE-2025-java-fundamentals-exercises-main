@@ -23,6 +23,7 @@ import java.util.function.Predicate;
  *
  * @author Taras Boychuk
  */
+//changes to commit
 public class CrazyGenerics {
     /**
      * {@link Sourced} is a container class that allows storing any object along with the source of that data.
