@@ -21,10 +21,16 @@ Output: (this should be printed to the console)
 *
 * */
 public class PrintFormattedTableTask {
+
+    public static void main(String[] args) {
+        printFormattedTable();
+    }
+
+
     public static final String[] input = new String[]{"1", "2", "3", "x", "5", "6", "a",
             "porosiatko", "c", "10", "11", "12", "13", "14", "15", "16"};
     public static final int columns = 5;
-    public static int minCellPadding = 4;
+    public static final int minCellPadding = 4;
     public static void printFormattedTable() {
 
 
