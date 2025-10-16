@@ -42,19 +42,20 @@ public class SortsTask {
 
     private static int[] insertionSort(int[] arrayTosort) {
         int[] sortedArray = Arrays.copyOf(arrayTosort, arrayTosort.length);
-        for (int i = 1; i < sortedArray.length; i++) {
-            compareToTheLeftAndSwap(sortedArray, i);
+        for (int rightElementIndex = 1; rightElementIndex < sortedArray.length; rightElementIndex++) {
+            compareToTheLeftAndSwap(sortedArray, rightElementIndex);
         }
         return sortedArray;
     }
 
-    private static void compareToTheLeftAndSwap(int[] arrayToCheck, int indexToCheck) {
-        if (arrayToCheck[indexToCheck] < arrayToCheck[indexToCheck - 1]) {
-            int temp = arrayToCheck[indexToCheck - 1];
-            arrayToCheck[indexToCheck - 1] = arrayToCheck[indexToCheck];
-            arrayToCheck[indexToCheck] = temp;
-            if (indexToCheck > 1) {
-                compareToTheLeftAndSwap(arrayToCheck, indexToCheck - 1);
+    private static void compareToTheLeftAndSwap(int[] arrayToCheck, int rightElementIndex) {
+        int leftElementIndex = rightElementIndex - 1;
+        if (arrayToCheck[rightElementIndex] < arrayToCheck[leftElementIndex]) {
+            int temp = arrayToCheck[leftElementIndex];
+            arrayToCheck[leftElementIndex] = arrayToCheck[rightElementIndex];
+            arrayToCheck[rightElementIndex] = temp;
+            if (rightElementIndex > 1) {
+                compareToTheLeftAndSwap(arrayToCheck, leftElementIndex);
             }
         }
     }
@@ -64,12 +65,12 @@ public class SortsTask {
         boolean swaped = true;
         while (swaped) {
             swaped = false;
-            for (int i = 0; i < arrayTosort.length - 1; i++) {
-                if (sortedArray[i] > sortedArray[i + 1]) {
+            for (int leftElementIndex = 0; leftElementIndex < arrayTosort.length - 1; leftElementIndex++) {
+                if (sortedArray[leftElementIndex] > sortedArray[leftElementIndex + 1]) {
                     swaped = true;
-                    int temp = sortedArray[i];
-                    sortedArray[i] = sortedArray[i + 1];
-                    sortedArray[i + 1] = temp;
+                    int temp = sortedArray[leftElementIndex];
+                    sortedArray[leftElementIndex] = sortedArray[leftElementIndex + 1];
+                    sortedArray[leftElementIndex + 1] = temp;
                 }
             }
         }
@@ -85,8 +86,8 @@ public class SortsTask {
     }
 
     private static void fulfillArrayWithRandomIntegers() {
-        for (int i = 0; i < toSort.length; i++) {
-            toSort[i] = (int) (Math.random() * ARRAY_SIZE);
+        for (int elementIndex = 0; elementIndex < toSort.length; elementIndex++) {
+            toSort[elementIndex] = (int) (Math.random() * ARRAY_SIZE);
         }
     }
 }
