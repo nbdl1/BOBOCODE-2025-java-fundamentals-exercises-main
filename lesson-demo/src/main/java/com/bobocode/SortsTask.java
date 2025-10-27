@@ -11,32 +11,42 @@ import java.util.Date;
 
 * */
 public class SortsTask {
-    private static final int ARRAY_SIZE = 10;
+    private static final int ARRAY_SIZE = 100_000;
     private static final int[] toSort = new int[ARRAY_SIZE];
 
     public static void main(String[] args) {
         fulfillArrayWithRandomIntegers();
-        //System.out.println(Arrays.toString(toSort));
+
         long start = new Date().getTime();
         int[] insertionSortedArray = insertionSort(toSort);
         long endOfInsertionSorting = new Date().getTime();
         long durationOfInsertionSorting = endOfInsertionSorting - start;
-        //System.out.println("insertionSortedArray = " + Arrays.toString(insertionSortedArray));
+
         System.out.println("durationOfInsertionSorting = " + durationOfInsertionSorting);
 
         start = new Date().getTime();
         int[] bubbleSortedArray = bubbleSort(toSort);
         long endOfBubbleSorting = new Date().getTime();
         long durationOfBubbleSorting = endOfBubbleSorting - start;
-        //System.out.println("bubbleSortedArray = " + Arrays.toString(bubbleSortedArray));
         System.out.println("durationOfBubbleSorting = " + durationOfBubbleSorting);
 
         start = new Date().getTime();
         int[] mergeSortedArray = mergeSort(toSort);
         long endOfmergeSorting = new Date().getTime();
         long durationOfmergeSorting = endOfmergeSorting - start;
-        //System.out.println("mergeSortedArray = " + Arrays.toString(mergeSortedArray));
         System.out.println("durationOfmergeSorting = " + durationOfmergeSorting);
+
+        start = new Date().getTime();
+        int[] quickSortedArray = quickSort(toSort);
+        long endOfQuickSorting = new Date().getTime();
+        long durationOfQuickSorting = endOfQuickSorting - start;
+        System.out.println("durationOfQuickSorting = " + durationOfQuickSorting);
+
+        // System.out.println("Original Array: "+Arrays.toString(toSort));
+       // System.out.println("quickSortedArray = " + Arrays.toString(quickSortedArray));
+        //System.out.println("insertionSortedArray = " + Arrays.toString(insertionSortedArray));
+        //System.out.println("mergeSortedArray = " + Arrays.toString(mergeSortedArray));
+        //System.out.println("bubbleSortedArray = " + Arrays.toString(bubbleSortedArray));
     }
 
 
@@ -51,7 +61,7 @@ public class SortsTask {
     private static void compareAndSwap(int[] arrayToCheck, int rightElementIndex) {
         int currentElement = arrayToCheck[rightElementIndex];
         int leftElementIndex = rightElementIndex - 1;
-        while(leftElementIndex>=0&&arrayToCheck[leftElementIndex]>currentElement) {
+        while (leftElementIndex >= 0 && arrayToCheck[leftElementIndex] > currentElement) {
             arrayToCheck[leftElementIndex + 1] = arrayToCheck[leftElementIndex];
             leftElementIndex--;
         }
@@ -78,46 +88,90 @@ public class SortsTask {
     private static int[] mergeSort(int[] arrayTosort) {
         int[] sortedArray = Arrays.copyOf(arrayTosort, arrayTosort.length);
 
-        sortedArray = Arrays.copyOf(divideAndSort(sortedArray),sortedArray.length);
-
-        //todo implement merging algorithm
+        sortedArray = Arrays.copyOf(divide(sortedArray), sortedArray.length);
 
         return sortedArray;
     }
 
-    private static int[] divideAndSort(int[] arrayTosort) {
-        if(arrayTosort.length==1){
+    private static int[] divide(int[] arrayTosort) {
+        if (arrayTosort.length == 1) {
             return arrayTosort;
         }
         int centerOfArray = arrayTosort.length / 2;
         int[] leftArray = Arrays.copyOfRange(arrayTosort, 0, centerOfArray);
         int[] rightArray = Arrays.copyOfRange(arrayTosort, centerOfArray, arrayTosort.length);
-        leftArray = divideAndSort(leftArray);
-        rightArray = divideAndSort(rightArray);
+        leftArray = divide(leftArray);
+        rightArray = divide(rightArray);
 
-        return mergeLeftAndRight(leftArray,rightArray);
+        return sortAndMergeLeftAndRight(leftArray, rightArray);
 
     }
 
-    private static int[] mergeLeftAndRight(int[] leftArray, int[] rightArray) {
+    private static int[] sortAndMergeLeftAndRight(int[] leftArray, int[] rightArray) {
         int[] mergedArray = new int[leftArray.length + rightArray.length];
-        int i = 0, j = 0, k = 0;
+        int leftArrayElementIndex = 0, rightArrayElementIndex = 0, mergedArrayElementIndex = 0;
 
-        while (i < leftArray.length && j < rightArray.length) {
-            if (leftArray[i] <= rightArray[j]) {
-                mergedArray[k++] = leftArray[i++];
+        while (leftArrayElementIndex < leftArray.length && rightArrayElementIndex < rightArray.length) {
+            if (leftArray[leftArrayElementIndex] <= rightArray[rightArrayElementIndex]) {
+                mergedArray[mergedArrayElementIndex++] = leftArray[leftArrayElementIndex++];
             } else {
-                mergedArray[k++] = rightArray[j++];
+                mergedArray[mergedArrayElementIndex++] = rightArray[rightArrayElementIndex++];
             }
         }
 
-        while (i < leftArray.length) mergedArray[k++] = leftArray[i++];
-        while (j < rightArray.length) mergedArray[k++] = rightArray[j++];
-
+        while (leftArrayElementIndex < leftArray.length)
+            mergedArray[mergedArrayElementIndex++] = leftArray[leftArrayElementIndex++];
+        while (rightArrayElementIndex < rightArray.length)
+            mergedArray[mergedArrayElementIndex++] = rightArray[rightArrayElementIndex++];
 
         return mergedArray;
     }
 
+    private static int[] quickSort(int[] arrayTosort) {
+        int[] sortedArray = Arrays.copyOf(arrayTosort, arrayTosort.length);
+        sortedArray = choosePivotAndSort(sortedArray);
+        return sortedArray;
+
+    }
+
+    private static int[] choosePivotAndSort(int[] arrayTosort) {
+        int pivotIndex = 0;
+        int originalArrayLength = arrayTosort.length;
+        int pivotElement = arrayTosort[pivotIndex];
+        int[] leftArray = new int[originalArrayLength - 1];
+        int[] rightArray = new int[originalArrayLength - 1];
+        int leftArrayIndex = 0;
+        int rightArrayIndex = 0;
+        for (int itemIndex = 1; itemIndex < originalArrayLength; itemIndex++) {
+            if (arrayTosort[itemIndex] < pivotElement) {
+                leftArray[leftArrayIndex++] = arrayTosort[itemIndex];
+            } else {
+                rightArray[rightArrayIndex++] = arrayTosort[itemIndex];
+            }
+        }
+
+        leftArray = Arrays.copyOfRange(leftArray, 0, leftArrayIndex);
+        rightArray = Arrays.copyOfRange(rightArray, 0, rightArrayIndex);
+
+        if (leftArray.length > 1) {
+            leftArray = choosePivotAndSort(leftArray);
+        }
+        if (rightArray.length > 1) {
+            rightArray = choosePivotAndSort(rightArray);
+        }
+        int[] resultArray = new int[originalArrayLength];
+
+        int resultArrayIndex = 0;
+        for (int element : leftArray) {
+            resultArray[resultArrayIndex++] = element;
+        }
+        resultArray[resultArrayIndex++] = pivotElement;
+        for (int element : rightArray) {
+            resultArray[resultArrayIndex++] = element;
+        }
+
+        return resultArray;
+    }
 
 
     private static void fulfillArrayWithRandomIntegers() {
